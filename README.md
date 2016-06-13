@@ -15,7 +15,7 @@ Integrates with [`gulp-help`][gulp-help] and [`run-sequence`][run-sequence] to p
 
 ```javascript
 const gulp = require('gulp');
-const addTasks = require('gulp-add-tasks');
+const addTasks = require('gulp-add-tasks')(gulp);
 
 addTasks(gulp, ...taskLists)
 ```
@@ -37,7 +37,7 @@ Task list accepts two object structures, one for "multi-tasks" and one for simpl
 
 ```javascript
 const gulp = require('gulp');
-const addTasks = require('gulp-add-tasks');
+const addTasks = require('gulp-add-tasks')(gulp);
 
 addTasks(gulp, {
   build: {
@@ -62,7 +62,7 @@ A simple key/value pair, with the key representing the task name, and the value 
 
 ```javascript
 const gulp = require('gulp');
-const addTasks = require('gulp-add-tasks');
+const addTasks = require('gulp-add-tasks')(gulp);
 
 addTasks(gulp, {
   babel() {
@@ -85,7 +85,7 @@ addTasks(gulp, {
 
 ```javascript
 const gulp = require('gulp');
-const addTasks = require('gulp-add-tasks');
+const addTasks = require('gulp-add-tasks')(gulp);
 
 addTasks(gulp, {
   copy: {

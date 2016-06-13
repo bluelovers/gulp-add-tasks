@@ -14,8 +14,7 @@ describe('add-tasks', () => {
   });
 
   it('returns an instance of gulp-help', () => {
-    const gulp = addTasks(gulpInstance);
-
+    const gulp = addTasks(gulpInstance)();
     [
       'dest',
       'src',
@@ -29,7 +28,7 @@ describe('add-tasks', () => {
   });
 
   it('adds tasks to gulp with a mapped function object', () => {
-    const gulp = addTasks(gulpInstance, {
+    const gulp = addTasks(gulpInstance)({
       build() {
         console.log('hello');
       }
@@ -39,7 +38,7 @@ describe('add-tasks', () => {
   });
 
   it('adds tasks to gulp with task-list structure', () => {
-    const gulp = addTasks(gulpInstance, {
+    const gulp = addTasks(gulpInstance)({
       transpile: {
         description: 'Build assets',
         tasks: [
@@ -80,7 +79,7 @@ describe('add-tasks', () => {
       ]
     ].forEach(([description, taskList, expectation]) => {
       it(`${description}`, () => {
-        const gulp = addTasks(gulpInstance, taskList);
+        const gulp = addTasks(gulpInstance)(taskList);
         expect(gulp.tasks[`${expectation}`]).to.be.defined;
       });
     });

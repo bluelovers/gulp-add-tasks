@@ -50,18 +50,20 @@ function addTasksToGulp(gulp, rs, taskObject: ITaskObject, parentTask: string = 
   }
 }
 
-export = function gulpAddTasks(gulp, ...taskObjects): any {
+export = function gulpAddTasks(gulp): any {
   if ( !looksLikeGulp(gulp) ) {
     throw new Error('An instance of gulp is required as the first argument');
   }
 
-  const runSequence = require('run-sequence');
-  gulp = looksLikeGulpHelp(gulp) ? gulp : require('gulp-help')(gulp);
+  return function(...taskObjects) {
+    const runSequence = require('run-sequence');
+    gulp = looksLikeGulpHelp(gulp) ? gulp : require('gulp-help')(gulp);
 
-  taskObjects
-    .forEach((taskObject: ITaskOptions) => {
-      addTasksToGulp(gulp, runSequence, taskObject);
-    });
+    taskObjects
+      .forEach((taskObject: ITaskOptions) => {
+        addTasksToGulp(gulp, runSequence, taskObject);
+      });
 
-  return gulp;
+    return gulp;
+  };
 }
