@@ -43,7 +43,7 @@ function addTasksToGulp(gulp, rs, taskObject: ITaskObject, parentTask: string = 
       const taskFn = typeof taskImpl === 'function' ? taskImpl : function(done) {
         return rs.use(gulp)(...(taskImpl.tasks || []).concat(done));
       };
-      gulp.task(taskName, taskImpl.description || false, [], taskFn, getOptions(taskImpl));
+      gulp.task(taskName, taskImpl.description, [], taskFn, getOptions(taskImpl));
     } else {
       addTasksToGulp(gulp, rs, taskImpl, taskName);
     }
