@@ -103,3 +103,5 @@ gulp will now have the tasks `copy:css` and `copy:js` available for usage from t
 [gulp]: http://gulpjs.com
 [gulp-help]: https://www.npmjs.com/package/gulp-help
 [run-sequence]: https://www.npmjs.com/package/run-sequence
+[require-tasks]: https://www.npmjs.com/package/require-tasks
+
