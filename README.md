@@ -1,5 +1,7 @@
 # `gulp-add-tasks`
 
+[![npm](https://img.shields.io/npm/v/gulp-add-tasks.svg?maxAge=2592000)](https://www.npmjs.com/package/gulp-add-tasks)
+
 A utility to dynamically add tasks based on a specified task structure to a passed-in instance of [`gulp`][gulp].
 
 Integrates with [`gulp-help`][gulp-help] and [`run-sequence`][run-sequence] to provide a more robust user experience, as well as the ability to run tasks synchronously
