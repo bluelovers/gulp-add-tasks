@@ -1,6 +1,7 @@
 # `gulp-add-tasks`
 
 [![npm](https://img.shields.io/npm/v/gulp-add-tasks.svg?maxAge=2592000)](https://www.npmjs.com/package/gulp-add-tasks)
+[![Travis](https://travis-ci.org/DSchau/gulp-add-tasks.svg)](https://travis-ci.org/DSchau/gulp-add-tasks)
 
 A utility to dynamically add tasks based on a specified task structure to a passed-in instance of [`gulp`][gulp].
 
