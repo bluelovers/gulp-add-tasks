@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "noImplicitAny": false,
+    "module": "commonjs",
+    "target": "es5"
+  },
+  "exclude": [
+    "bower_components",
+    "node_modules",
+    "dist/bower_components"
+  ],
+  "filesGlob": [
+    "test/**/*.ts",
+    "typings/**/*.{ts,tsx}"
+  ]
+}
