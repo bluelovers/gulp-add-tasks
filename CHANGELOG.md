@@ -1,3 +1,8 @@
+<a name="1.2.2"></a>
+## [1.2.2](https://github.com/DSchau/gulp-add-tasks/compare/1.2.1...v1.2.2) (2016-06-14)
+
+
+
 <a name="1.2.1"></a>
 ## [1.2.1](https://github.com/DSchau/gulp-add-tasks/compare/1.2.0...1.2.1) (2016-06-13)
 

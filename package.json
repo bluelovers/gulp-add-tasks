@@ -1,13 +1,13 @@
 {
   "name": "gulp-add-tasks",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "A tool to add tasks to a passed-in gulp instance, as a task list, or as a map of functions",
   "main": "lib/index.js",
   "files": [
     "lib"
   ],
   "scripts": {
-    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
+    "changelog": "del \"lib/**/*\" && conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
     "prepublish": "tsc & npm run changelog",
     "pretest": "tsc --project tsconfig.test.json",
     "test": "mocha",

@@ -84,4 +84,7 @@ describe('add-tasks', () => {
       });
     });
   });
+
+  it.only('can use a function for the tasks property', () => {
+  });
 });

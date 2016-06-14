@@ -4,7 +4,6 @@ interface ITaskObject {
   options?: ITaskOptions;
   tasks?: string[];
 }
-
 interface ITaskOptions {
   options?: any;
   aliases?: string[];
@@ -29,8 +28,15 @@ function getOptions(impl): ITaskOptions {
   };
 }
 
-function isTaskListObject(impl): boolean {
+function isTaskListObject(impl: any = {}): boolean {
   return Object.keys(impl).indexOf('tasks') > -1;
+}
+
+function getTasks(tasks) {
+  if ( typeof tasks === 'function' ) {
+    tasks = tasks();
+  }
+  return tasks || [];
 }
 
 function addTasksToGulp(gulp, rs, taskObject: ITaskObject, parentTask: string = ''): void {
@@ -41,7 +47,7 @@ function addTasksToGulp(gulp, rs, taskObject: ITaskObject, parentTask: string = 
     }
     if ( typeof taskImpl === 'function' || isTaskListObject(taskImpl) ) {
       const taskFn = typeof taskImpl === 'function' ? taskImpl : function(done) {
-        return rs.use(gulp)(...(taskImpl.tasks || []).concat(done));
+        return rs.use(gulp)(...(getTasks(taskImpl.tasks)).concat(done));
       };
       gulp.task(taskName, taskImpl.description, [], taskFn, getOptions(taskImpl));
     } else {
@@ -50,14 +56,14 @@ function addTasksToGulp(gulp, rs, taskObject: ITaskObject, parentTask: string = 
   }
 }
 
-export = function gulpAddTasks(gulp): any {
-  if ( !looksLikeGulp(gulp) ) {
+export = function gulpAddTasks(gulpInstance): any {
+  if ( !looksLikeGulp(gulpInstance) ) {
     throw new Error('An instance of gulp is required as the first argument');
   }
 
   return function(...taskObjects) {
     const runSequence = require('run-sequence');
-    gulp = looksLikeGulpHelp(gulp) ? gulp : require('gulp-help')(gulp);
+    const gulp = looksLikeGulpHelp(gulpInstance) ? gulpInstance : require('gulp-help')(gulpInstance);
 
     taskObjects
       .forEach((taskObject: ITaskOptions) => {
