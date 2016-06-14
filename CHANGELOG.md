@@ -1,5 +1,10 @@
 <a name="1.2.2"></a>
-## [1.2.2](https://github.com/DSchau/gulp-add-tasks/compare/1.2.1...v1.2.2) (2016-06-14)
+## [1.2.2](https://github.com/DSchau/gulp-add-tasks/compare/1.2.1...1.2.2) (2016-06-14)
+
+
+### Features
+
+* allow tasks to be a function ([4c4936b](https://github.com/DSchau/gulp-add-tasks/commit/4c4936b))
 
 
 
