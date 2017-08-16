@@ -3,6 +3,9 @@ interface ITaskObject {
   description?: string;
   options?: ITaskOptions;
   tasks?: string[];
+
+  deps?: Array<string>;
+  callback?: Function;
 }
 interface ITaskOptions {
   options?: any;
@@ -39,17 +42,26 @@ function getTasks(tasks) {
   return tasks || [];
 }
 
+function prefixTasks(tasks: Array<string> = [], parentTask: string = '') : Array<string> {
+  return (tasks || []).map(function (v: string) {
+    return v.indexOf(':') === 0 ? parentTask + v : v;
+  });
+}
+
 function addTasksToGulp(gulp, rs, taskObject: ITaskObject, parentTask: string = ''): void {
   for ( let taskName in taskObject ) {
     const taskImpl = taskObject[taskName];
     if ( parentTask ) {
       taskName = `${parentTask}:${taskName}`;
     }
-    if ( typeof taskImpl === 'function' || isTaskListObject(taskImpl) ) {
+    if (Object.keys(taskImpl).indexOf('callback') > -1) {
+      const taskFn = taskImpl.callback;
+      gulp.task(taskName, taskImpl.description, prefixTasks(taskImpl.deps, parentTask), taskFn, getOptions(taskImpl));
+    } else if ( typeof taskImpl === 'function' || isTaskListObject(taskImpl) ) {
       const taskFn = typeof taskImpl === 'function' ? taskImpl : function(done) {
         return rs.use(gulp)(...(getTasks(taskImpl.tasks)).concat(done));
       };
-      gulp.task(taskName, taskImpl.description, [], taskFn, getOptions(taskImpl));
+      gulp.task(taskName, taskImpl.description, prefixTasks(taskImpl.deps, parentTask), taskFn, getOptions(taskImpl));
     } else {
       addTasksToGulp(gulp, rs, taskImpl, taskName);
     }
