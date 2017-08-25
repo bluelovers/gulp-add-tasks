@@ -3,7 +3,7 @@ interface ITaskObject
 	aliases?: string[];
 	description?: string;
 	options?: ITaskOptions;
-	tasks?: string[];
+	tasks?: ITasksSequence;
 
 	deps?: Array<string>;
 	callback?: Function;
@@ -13,6 +13,16 @@ interface ITaskOptions
 {
 	options?: any;
 	aliases?: string[];
+}
+
+interface IExportDefault
+{
+	(...taskObjects);
+}
+
+interface ITasksSequence extends Array<string|string[]>
+{
+	[index: number]: string|string[];
 }
 
 function looksLikeGulp(gulp): boolean
@@ -25,9 +35,9 @@ function looksLikeGulpHelp(gulp): boolean
 	return !!(gulp.tasks.help);
 }
 
-function getOptions(impl): ITaskOptions
+function getOptions(impl: any|ITaskOptions): ITaskOptions
 {
-	const options = impl.options || {};
+	const options = (impl.options || {}) as ITaskOptions;
 	if (options.options || options.aliases)
 	{
 		return options;
@@ -43,16 +53,29 @@ function isTaskListObject(impl: any = {}): boolean
 	return Object.keys(impl).indexOf('tasks') > -1;
 }
 
-function getTasks(tasks)
+function getTasks(tasks: any|ITasksSequence, parentTask: string = ''): ITasksSequence
 {
 	if (typeof tasks === 'function')
 	{
 		tasks = tasks();
 	}
+
+	for (let i in tasks)
+	{
+		if (Array.isArray(tasks[i]))
+		{
+			tasks[i] = prefixTasks(tasks[i], parentTask);
+		}
+		else if (typeof tasks[i] == 'string')
+		{
+			tasks[i] = prefixTasks([tasks[i]], parentTask)[0];
+		}
+	}
+
 	return tasks || [];
 }
 
-function prefixTasks(tasks: Array<string> = [], parentTask: string = ''): Array<string>
+function prefixTasks(tasks: ITasksSequence = [], parentTask: string = ''): Array<string>
 {
 	return (tasks || []).map(function (v: string)
 	{
@@ -78,7 +101,7 @@ function addTasksToGulp(gulp, rs, taskObject: ITaskObject, parentTask: string = 
 		{
 			const taskFn = typeof taskImpl === 'function' ? taskImpl : function (done)
 			{
-				return rs.use(gulp)(...(getTasks(taskImpl.tasks)).concat(done));
+				return rs.use(gulp)(...(getTasks(taskImpl.tasks, parentTask)).concat(done));
 			};
 			gulp.task(taskName, taskImpl.description, prefixTasks(taskImpl.deps, parentTask), taskFn, getOptions(taskImpl));
 		}
@@ -89,7 +112,7 @@ function addTasksToGulp(gulp, rs, taskObject: ITaskObject, parentTask: string = 
 	}
 }
 
-export = function gulpAddTasks(gulpInstance): any
+export = function gulpAddTasks(gulpInstance, parentTask: string = '')
 {
 	if (!looksLikeGulp(gulpInstance))
 	{
@@ -104,7 +127,7 @@ export = function gulpAddTasks(gulpInstance): any
 		taskObjects
 			.forEach((taskObject: ITaskOptions) =>
 			{
-				addTasksToGulp(gulp, runSequence, taskObject);
+				addTasksToGulp(gulp, runSequence, taskObject, parentTask);
 			});
 
 		return gulp;
