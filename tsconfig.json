@@ -2,12 +2,15 @@
   "compilerOptions": {
     "noImplicitAny": false,
     "declaration": true,
+    "moduleResolution": "node",
+    "strict": false,
     "module": "commonjs",
     "outDir": "lib",
-    "target": "es5"
+    "target": "es2017"
   },
   "exclude": [
     "node_modules",
+    "lib",
     "test"
   ],
   "filesGlob": [
