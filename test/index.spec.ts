@@ -1,6 +1,6 @@
-const { expect } = require('chai');
 
-const addTasks = require('../src/');
+import { expect } from 'chai';
+import addTasks from '..';
 
 describe('add-tasks', () => {
   let gulpInstance;
