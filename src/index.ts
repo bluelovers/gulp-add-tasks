@@ -1,4 +1,4 @@
-interface ITaskObject
+export interface ITaskObject
 {
 	aliases?: string[];
 	description?: string;
@@ -6,23 +6,28 @@ interface ITaskObject
 	tasks?: ITasksSequence;
 
 	deps?: Array<string>;
-	callback?: Function;
+	callback?: ITaskCallback;
 }
 
-interface ITaskOptions
+export interface ITaskCallback extends Function
+{
+	(done?): void | any | Promise<any | void>;
+}
+
+export interface ITaskOptions
 {
 	options?: any;
 	aliases?: string[];
 }
 
-interface IExportDefault
+export interface IExportDefault extends Function
 {
 	(...taskObjects);
 }
 
-interface ITasksSequence extends Array<string|string[]>
+export interface ITasksSequence extends Array<string | string[]>
 {
-	[index: number]: string|string[];
+	[index: number]: string | string[];
 }
 
 function looksLikeGulp(gulp): boolean
@@ -35,7 +40,7 @@ function looksLikeGulpHelp(gulp): boolean
 	return !!(gulp.tasks.help);
 }
 
-function getOptions(impl: any|ITaskOptions): ITaskOptions
+function getOptions(impl: any | ITaskOptions): ITaskOptions
 {
 	const options = (impl.options || {}) as ITaskOptions;
 	if (options.options || options.aliases)
@@ -53,11 +58,11 @@ function isTaskListObject(impl: any = {}): boolean
 	return Object.keys(impl).indexOf('tasks') > -1;
 }
 
-function getTasks(tasks: any|ITasksSequence, parentTask: string = ''): ITasksSequence
+function getTasks(tasks: any | ITasksSequence, parentTask: string = ''): ITasksSequence
 {
 	if (typeof tasks === 'function')
 	{
-		tasks = tasks();
+		tasks = tasks() as ITasksSequence;
 	}
 
 	for (let i in tasks)
@@ -75,10 +80,17 @@ function getTasks(tasks: any|ITasksSequence, parentTask: string = ''): ITasksSeq
 	return tasks || [];
 }
 
-function prefixTasks(tasks: ITasksSequence = [], parentTask: string = ''): Array<string>
+export function prefixTasks(tasks: ITasksSequence = [], parentTask: string = ''): Array<string>
 {
+	if (tasks && !Array.isArray(tasks))
+	{
+		tasks = [tasks as any] as ITasksSequence;
+	}
+
 	return (tasks || []).map(function (v: string)
 	{
+		if (typeof v !== 'string') return v;
+
 		return v.indexOf(':') === 0 ? parentTask + v : v;
 	});
 }
@@ -94,12 +106,30 @@ function addTasksToGulp(gulp, rs, taskObject: ITaskObject, parentTask: string = 
 		}
 		if (Object.keys(taskImpl).indexOf('callback') > -1)
 		{
-			const taskFn = taskImpl.callback;
+			let taskFn: ITaskCallback;
+
+			if (isTaskListObject(taskImpl))
+			{
+				taskFn = async function (): Promise<any | void>
+				{
+					await new Promise(function (resolve, reject)
+					{
+						rs.use(gulp)(...((getTasks(taskImpl.tasks, parentTask) as Array<any>).concat(resolve)))
+					});
+
+					await taskImpl.callback();
+				};
+			}
+			else
+			{
+				taskFn = taskImpl.callback;
+			}
+
 			gulp.task(taskName, taskImpl.description, prefixTasks(taskImpl.deps, parentTask), taskFn, getOptions(taskImpl));
 		}
 		else if (typeof taskImpl === 'function' || isTaskListObject(taskImpl))
 		{
-			const taskFn = typeof taskImpl === 'function' ? taskImpl : function (done)
+			const taskFn: ITaskCallback = typeof taskImpl === 'function' ? taskImpl : function (done)
 			{
 				return rs.use(gulp)(...(getTasks(taskImpl.tasks, parentTask)).concat(done));
 			};
@@ -112,7 +142,7 @@ function addTasksToGulp(gulp, rs, taskObject: ITaskObject, parentTask: string = 
 	}
 }
 
-export = function gulpAddTasks(gulpInstance, parentTask: string = '')
+export function gulpAddTasks(gulpInstance, parentTaskName: string = ''): IExportDefault
 {
 	if (!looksLikeGulp(gulpInstance))
 	{
@@ -127,9 +157,11 @@ export = function gulpAddTasks(gulpInstance, parentTask: string = '')
 		taskObjects
 			.forEach((taskObject: ITaskOptions) =>
 			{
-				addTasksToGulp(gulp, runSequence, taskObject, parentTask);
+				addTasksToGulp(gulp, runSequence, taskObject, parentTaskName);
 			});
 
 		return gulp;
 	};
 }
+
+export default gulpAddTasks;
