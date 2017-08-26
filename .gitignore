@@ -23,3 +23,7 @@ Thumbs.db
 
 # NPM files
 npm-debug.log
+/test/*.spec.js
+/src/*.js
+/.idea/
+/node_modules/
