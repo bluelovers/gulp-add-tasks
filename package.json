@@ -1,6 +1,6 @@
 {
   "name": "gulp-add-tasks2",
-  "version": "1.3.0",
+  "version": "1.3.0.1",
   "description": "A tool to add tasks to a passed-in gulp instance, as a task list, or as a map of functions",
   "main": "lib/index.js",
   "files": [
@@ -23,24 +23,26 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DSchau/gulp-add-tasks.git"
+    "url": "git+https://github.com/bluelovers/gulp-add-tasks.git"
   },
   "devDependencies": {
-    "chai": "^3.5.0",
-    "conventional-changelog-cli": "^1.2.0",
-    "del-cli": "^0.2.0",
-    "gulp": "^3.9.1",
-    "mocha": "^2.5.3",
-    "typescript": "^1.8.10"
+    "@types/mocha": "latest",
+    "@types/node": "latest",
+    "chai": "latest",
+    "conventional-changelog-cli": "latest",
+    "del-cli": "latest",
+    "gulp": "latest",
+    "mocha": "latest",
+    "typescript": "latest"
   },
   "dependencies": {
-    "gulp-help": "^1.6.1",
-    "run-sequence": "^1.2.1"
+    "gulp-help": "latest",
+    "run-sequence": "latest"
   },
   "bugs": {
-    "url": "https://github.com/DSchau/gulp-add-tasks/issues"
+    "url": "https://github.com/bluelovers/gulp-add-tasks/issues"
   },
-  "homepage": "https://github.com/DSchau/gulp-add-tasks#readme",
+  "homepage": "https://github.com/bluelovers/gulp-add-tasks#readme",
   "directories": {
     "lib": "lib",
     "test": "test"
