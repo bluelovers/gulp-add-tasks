@@ -1,23 +1,38 @@
-# `gulp-add-tasks`
+# `gulp-add-tasks2`
 
-[![npm](https://img.shields.io/npm/v/gulp-add-tasks.svg?maxAge=2592000)](https://www.npmjs.com/package/gulp-add-tasks)
-[![Travis](https://travis-ci.org/DSchau/gulp-add-tasks.svg)](https://travis-ci.org/DSchau/gulp-add-tasks)
+[![npm](https://img.shields.io/npm/v/gulp-add-tasks2.svg?maxAge=2592000)](https://www.npmjs.com/package/gulp-add-tasks2)
 
 A utility to dynamically add tasks based on a specified task structure to a passed-in instance of [`gulp`][gulp].
 
 Integrates with [`gulp-help`][gulp-help] and [`run-sequence`][run-sequence] to provide a more robust user experience, as well as the ability to run tasks synchronously
 
+*this module fork from [`gulp-add-tasks`][gulp-add-tasks]
+
 ## Install
 
-`npm i gulp-add-tasks --save-dev`
+`npm i gulp-add-tasks2 --save-dev`
 
 ## Usage
 
 ```javascript
 const gulp = require('gulp');
-const addTasks = require('gulp-add-tasks')(gulp);
+const addTasks = require('gulp-add-tasks2').gulpAddTasks(gulp);
 
 addTasks(...taskLists)
+```
+
+### other way import
+
+```
+const addTasks = require('gulp-add-tasks2').gulpAddTasks(gulp, parentTaskName);
+const addTasks = require('gulp-add-tasks2/node')(gulp, parentTaskName);
+```
+
+```
+import gulpAddTasks from 'gulp-add-tasks2';
+import { gulpAddTasks } from 'gulp-add-tasks2';
+
+const addTasks = gulpAddTasks(gulp, parentTaskName);
 ```
 
 ### Task list structure
@@ -32,12 +47,14 @@ Task list accepts two object structures, one for "multi-tasks" and one for simpl
 |`description`|A task description, used by [`gulp-help`][gulp-help]|
 |`options`|Programmatic options to be utlized by the tasks, used by [`gulp-help`][gulp-help]|
 |`aliases`|An array of aliases that the task can be called with, used by [`gulp-help`][gulp-help]|
+|`deps`|An array of tasks to be executed and completed before your task will run.|
+|`callback`|The function performs the task's main operations. Generally this takes the form of:|
 
 ##### Example
 
 ```javascript
 const gulp = require('gulp');
-const addTasks = require('gulp-add-tasks')(gulp);
+const addTasks = require('gulp-add-tasks2').gulpAddTasks(gulp);
 
 addTasks({
   build: {
@@ -62,7 +79,7 @@ A simple key/value pair, with the key representing the task name, and the value 
 
 ```javascript
 const gulp = require('gulp');
-const addTasks = require('gulp-add-tasks')(gulp);
+const addTasks = require('gulp-add-tasks2').gulpAddTasks(gulp);
 
 addTasks({
   babel() {
@@ -85,7 +102,7 @@ addTasks({
 
 ```javascript
 const gulp = require('gulp');
-const addTasks = require('gulp-add-tasks')(gulp);
+const addTasks = require('gulp-add-tasks2').gulpAddTasks(gulp);
 
 addTasks({
   copy: {
@@ -107,4 +124,5 @@ gulp will now have the tasks `copy:css` and `copy:js` available for usage from t
 [gulp-help]: https://www.npmjs.com/package/gulp-help
 [run-sequence]: https://www.npmjs.com/package/run-sequence
 [require-tasks]: https://www.npmjs.com/package/require-tasks
+[gulp-add-tasks]: https://www.npmjs.com/package/gulp-add-tasks
 
