@@ -24,7 +24,7 @@ describe('add-tasks', () => {
       expect(gulp).to.respondTo(fn);
     });
 
-    expect(gulp.tasks.help).to.be.defined;
+    expect(gulp.tasks.help).to.not.be.undefined;
   });
 
   it('adds tasks to gulp with a mapped function object', () => {
@@ -34,7 +34,7 @@ describe('add-tasks', () => {
       }
     });
 
-    expect(gulp.tasks.build).to.be.defined;
+    expect(gulp.tasks.build).to.not.be.undefined;
   });
 
   it('adds tasks to gulp with task-list structure', () => {
@@ -48,7 +48,7 @@ describe('add-tasks', () => {
       }
     });
 
-    expect(gulp.tasks.transpile).to.be.defined;
+    expect(gulp.tasks.transpile).to.not.be.undefined;
   });
 
   describe('recursive task adding', () => {
@@ -80,11 +80,13 @@ describe('add-tasks', () => {
     ].forEach(([description, taskList, expectation]) => {
       it(`${description}`, () => {
         const gulp = addTasks(gulpInstance)(taskList);
-        expect(gulp.tasks[`${expectation}`]).to.be.defined;
+        expect(gulp.tasks[`${expectation}`]).to.not.be.undefined;
       });
     });
   });
 
+  /*
   it.only('can use a function for the tasks property', () => {
   });
+  */
 });
