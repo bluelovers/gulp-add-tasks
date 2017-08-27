@@ -1,5 +1,10 @@
 {
   "compilerOptions": {
-    "outDir": "."
+    "declaration": true,
+    "moduleResolution": "node",
+    "strict": true,
+    "module": "commonjs",
+    "outDir": ".",
+    "target": "es2017"
   }
 }
