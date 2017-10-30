@@ -14,7 +14,6 @@
     "test"
   ],
   "filesGlob": [
-    "src/**/*.ts",
-    "typings/**/*.{ts,tsx}"
+    "src/**/*.ts"
   ]
 }
