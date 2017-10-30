@@ -1,5 +1,5 @@
-<a name="1.3.2"></a>
-## [1.3.2](https://github.com/bluelovers/gulp-add-tasks/compare/1.3.0...1.3.2) (2017-08-27)
+<a name="2.0.0"></a>
+# [2.0.0](https://github.com/bluelovers/gulp-add-tasks/compare/1.3.0...2.0.0) (2017-10-30)
 
 
 
