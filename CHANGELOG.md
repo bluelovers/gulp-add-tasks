@@ -1,5 +1,11 @@
-<a name="2.0.0"></a>
-# [2.0.0](https://github.com/bluelovers/gulp-add-tasks/compare/1.3.0...2.0.0) (2017-10-30)
+<a name="2.0.1"></a>
+## [2.0.1](https://github.com/bluelovers/gulp-add-tasks/compare/1.3.0...2.0.1) (2017-10-30)
+
+
+### Bug Fixes
+
+* bugfix (Step: 1) ([c33d2f5](https://github.com/bluelovers/gulp-add-tasks/commit/c33d2f5))
+* bugfix (Step: 2) ([d07f166](https://github.com/bluelovers/gulp-add-tasks/commit/d07f166))
 
 
 
