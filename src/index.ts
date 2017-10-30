@@ -62,7 +62,7 @@ export function isTaskListObject(impl: any = {}): boolean
 
 export function getTasks(tasks: any | ITasksSequence,
 	parentTask: string = '',
-	cache: IGulpAddTasksOptions = {}
+	cache: IGulpAddTasksOptions = defaultGulpAddTasksOptions
 ): ITasksSequence
 {
 	if (typeof tasks === 'function')
@@ -87,7 +87,7 @@ export function getTasks(tasks: any | ITasksSequence,
 
 export function prefixTasks(tasks: ITasksSequence | any = [],
 	parentTask: string = '',
-	cache: IGulpAddTasksOptions = {}
+	cache: IGulpAddTasksOptions = defaultGulpAddTasksOptions
 ): Array<string>
 {
 	if (tasks && !Array.isArray(tasks))
@@ -108,6 +108,8 @@ export function prefixTasks(tasks: ITasksSequence | any = [],
 		{
 			return v.replace(`~${cache.sep}`, `${cache.root}${cache.sep}`)
 		}
+
+		console.log(cache);
 
 		return v.indexOf(cache.sep) === 0 ? parentTask + v : v;
 	});
@@ -140,7 +142,7 @@ export function addTasksToGulp(gulp,
 	rs,
 	taskObject: ITaskObject,
 	parentTask: string = '',
-	cache: IGulpAddTasksOptions = {}
+	cache: IGulpAddTasksOptions = defaultGulpAddTasksOptions
 ): void
 {
 	for (let taskName in taskObject)
@@ -162,7 +164,7 @@ export function addTasksToGulp(gulp,
 				{
 					await new Promise(function (resolve, reject)
 					{
-						rs.use(gulp)(...((getTasks(taskImpl.tasks, parentTask) as Array<any>).concat(resolve)))
+						rs.use(gulp)(...((getTasks(taskImpl.tasks, parentTask, cache) as Array<any>).concat(resolve)))
 					});
 
 					await taskImpl.callback.call(this, ...argv);
@@ -173,19 +175,19 @@ export function addTasksToGulp(gulp,
 				taskFn = taskImpl.callback;
 			}
 
-			gulp.task(taskName, taskImpl.description, prefixTasks(taskImpl.deps, parentTask), taskFn, getOptions(taskImpl));
+			gulp.task(taskName, taskImpl.description, prefixTasks(taskImpl.deps, parentTask, cache), taskFn, getOptions(taskImpl));
 		}
 		else if (typeof taskImpl === 'function' || isTaskListObject(taskImpl))
 		{
 			const taskFn: ITaskCallback = typeof taskImpl === 'function' ? taskImpl : function (done)
 			{
-				return rs.use(gulp)(...(getTasks(taskImpl.tasks, parentTask)).concat(done));
+				return rs.use(gulp)(...(getTasks(taskImpl.tasks, parentTask, cache)).concat(done));
 			};
-			gulp.task(taskName, taskImpl.description, prefixTasks(taskImpl.deps, parentTask), taskFn, getOptions(taskImpl));
+			gulp.task(taskName, taskImpl.description, prefixTasks(taskImpl.deps, parentTask, cache), taskFn, getOptions(taskImpl));
 		}
 		else if (Object.keys(taskImpl).indexOf('deps') > -1)
 		{
-			gulp.task(taskName, taskImpl.description, prefixTasks(taskImpl.deps, parentTask), () => {}, getOptions(taskImpl));
+			gulp.task(taskName, taskImpl.description, prefixTasks(taskImpl.deps, parentTask, cache), () => {}, getOptions(taskImpl));
 		}
 		else if (!validTaskObject(taskImpl))
 		{
@@ -206,9 +208,15 @@ export interface IGulpAddTasksOptions
 	sep?: string;
 }
 
+export const defaultGulpAddTasksOptions = {
+
+	sep: SEP,
+
+} as IGulpAddTasksOptions;
+
 export function gulpAddTasks(gulpInstance,
 	parentTaskName: string | string[] = '',
-	options: IGulpAddTasksOptions = {}
+	options: IGulpAddTasksOptions = defaultGulpAddTasksOptions
 ): IExportDefault
 {
 	if (!looksLikeGulp(gulpInstance))
@@ -224,9 +232,8 @@ export function gulpAddTasks(gulpInstance,
 	const cache = Object.assign({
 
 		root: parentTaskName,
-		sep: SEP,
 
-	}, options) as IGulpAddTasksOptions;
+	}, defaultGulpAddTasksOptions, options) as IGulpAddTasksOptions;
 
 	return function (...taskObjects)
 	{
