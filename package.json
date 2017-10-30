@@ -1,6 +1,6 @@
 {
   "name": "gulp-add-tasks2",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "A tool to add tasks to a passed-in gulp instance, as a task list, or as a map of functions",
   "main": "lib/index.js",
   "files": [
