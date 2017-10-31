@@ -104,7 +104,7 @@ export function prefixTasks(tasks: ITasksSequence | any = [],
 			return v;
 		}
 
-		if (cache.root && v.indexOf(`~${cache.sep}`) === 0)
+		if (cache.root !== '' && v.indexOf(`~${cache.sep}`) === 0)
 		{
 			return v.replace(`~${cache.sep}`, `${cache.root}${cache.sep}`)
 		}
