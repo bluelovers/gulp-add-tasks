@@ -109,9 +109,17 @@ export function prefixTasks(tasks: ITasksSequence | any = [],
 			return v.replace(`~${cache.sep}`, `${cache.root}${cache.sep}`)
 		}
 
-		console.log(cache);
+		if (v.indexOf(cache.sep) === 0)
+		{
+			if (parentTask === '')
+			{
+				return v.substr(cache.sep.length);
+			}
 
-		return v.indexOf(cache.sep) === 0 ? parentTask + v : v;
+			return parentTask + v;
+		}
+
+		return v;
 	});
 }
 
