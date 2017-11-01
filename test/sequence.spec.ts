@@ -18,8 +18,10 @@ describe(relative(__filename), () =>
 	beforeEach(() =>
 	{
 		gulpInstance = init(new Gulp, parentTasks, {
-			runSequence: runSequence,
+			//runSequence: runSequence,
 		})(taskList);
+
+		//gulpInstance.options.disableResetTask = false;
 	});
 
 	describe(`check:seq`, () =>
