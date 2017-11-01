@@ -228,12 +228,14 @@ export interface IGulpAddTasksOptions
 	sep?: string;
 
 	runSequence?;
+	gulpHelp?;
 }
 
 export const defaultGulpAddTasksOptions = {
 
 	sep: SEP,
 	runSequence: runSequence,
+	gulpHelp: gulpHelp,
 
 } as IGulpAddTasksOptions;
 
@@ -270,8 +272,10 @@ export function gulpAddTasks(gulpInstance,
 
 	}, defaultGulpAddTasksOptions, options) as IGulpAddTasksOptions;
 
-	let fn = function (...taskObjects): IGulpHelp
+	return function (...taskObjects: ITaskObjectList[]): IGulpHelp
 	{
+		const runSequence = cache.runSequence;
+		const gulpHelp = cache.gulpHelp;
 		const gulp = looksLikeGulpHelp(gulpInstance) ? gulpInstance : gulpHelp(gulpInstance);
 
 		gulp.options = gulp.options || {};
@@ -280,13 +284,11 @@ export function gulpAddTasks(gulpInstance,
 		taskObjects
 			.forEach((taskObject: ITaskObjectList) =>
 			{
-				addTasksToGulp(gulp, cache.runSequence, taskObject, parentTaskName as string, cache);
+				addTasksToGulp(gulp, runSequence, taskObject, parentTaskName as string, cache);
 			});
 
 		return gulp;
 	};
-
-	return fn;
 }
 
 export { gulpAddTasks as init, runSequence, gulpHelp, SEP };
