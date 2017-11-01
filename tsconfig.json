@@ -1,19 +1,37 @@
 {
   "compilerOptions": {
-    "noImplicitAny": false,
-    "declaration": true,
+    "module": "CommonJS",
+    "target": "es2017",
+
     "moduleResolution": "node",
+    //"allowJs": true,
+
+    "sourceMap": true,
+    "inlineSourceMap": true,
+    "inlineSources": true,
+
+    "declaration": true,
+    "experimentalDecorators": true,
+
+    "allowSyntheticDefaultImports": true,
+
     "strict": false,
-    "module": "commonjs",
-    "outDir": "lib",
-    "target": "es2017"
+
+    //"forceConsistentCasingInFileNames": true,
+
+    "locale": "zh-TW",
+    "pretty": true,
+
+    "baseUrl": ".",
+    "sourceRoot": ".",
+    "rootDir": ".",
+    "outDir": ".",
+
+    "traceResolution": true,
+    "newLine": "lf"
   },
+
   "exclude": [
-    "node_modules",
-    "lib",
-    "test"
-  ],
-  "filesGlob": [
-    "src/**/*.ts"
+    "node_modules"
   ]
 }
