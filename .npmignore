@@ -1,5 +1,5 @@
 # Created by .ignore support plugin (hsz.mobi)
-/test/*.spec.js
-/src/index.js
+/test/
 /.idea/
 /node_modules/
+!/node.js
