@@ -1,5 +1,5 @@
-//import runSequence from 'gulp-run-seq-unique/run-sequence';
-import * as runSequence from 'run-sequence';
+import runSequence from 'gulp-run-seq-unique/run-sequence';
+//import * as runSequence from 'run-sequence';
 import * as gulpHelp from 'gulp-help';
 import * as gulp from 'gulp';
 
