@@ -17,7 +17,9 @@ describe(relative(__filename), () =>
 
 	beforeEach(() =>
 	{
-		gulpInstance = init(new Gulp, parentTasks)(taskList);
+		gulpInstance = init(new Gulp, parentTasks, {
+			runSequence: runSequence,
+		})(taskList);
 	});
 
 	describe(`check:seq`, () =>
