@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "gulp-help": "latest",
-    "gulp-run-seq-unique": "latest"
+    "gulp-run-seq-unique": "^1.0.2"
   },
   "bugs": {
     "url": "https://github.com/bluelovers/gulp-add-tasks/issues"
