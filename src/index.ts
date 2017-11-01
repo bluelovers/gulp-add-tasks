@@ -1,3 +1,8 @@
+//import runSequence from 'gulp-run-seq-unique/run-sequence';
+import * as runSequence from 'run-sequence';
+import * as gulpHelp from 'gulp-help';
+import * as gulp from 'gulp';
+
 export interface ITaskObject
 {
 	aliases?: string[];
@@ -7,6 +12,13 @@ export interface ITaskObject
 
 	deps?: Array<string>;
 	callback?: ITaskCallback;
+}
+
+export interface ITaskObjectList
+{
+	default?: ITaskObject | ITaskCallback;
+
+	[key: string]: ITaskObjectList | ITaskCallback | ITaskObject;
 }
 
 export interface ITaskCallback extends Function
@@ -30,7 +42,7 @@ export interface ITasksSequence extends Array<string | string[]>
 	[index: number]: string | string[];
 }
 
-export const SEP = ':';
+const SEP = ':';
 
 export function looksLikeGulp(gulp): boolean
 {
@@ -148,14 +160,14 @@ export function validTaskObject(taskObject: ITaskObject): false | ITaskObject
 
 export function addTasksToGulp(gulp,
 	rs,
-	taskObject: ITaskObject,
+	taskObject: ITaskObjectList,
 	parentTask: string = '',
 	cache: IGulpAddTasksOptions = defaultGulpAddTasksOptions
 ): void
 {
 	for (let taskName in taskObject)
 	{
-		const taskImpl = taskObject[taskName];
+		const taskImpl = taskObject[taskName] as ITaskObject;
 
 		if (parentTask)
 		{
@@ -205,7 +217,7 @@ export function addTasksToGulp(gulp,
 		}
 		else
 		{
-			addTasksToGulp(gulp, rs, taskImpl, taskName, cache);
+			addTasksToGulp(gulp, rs, taskImpl as ITaskObjectList, taskName, cache);
 		}
 	}
 }
@@ -214,18 +226,33 @@ export interface IGulpAddTasksOptions
 {
 	root?: string;
 	sep?: string;
+
+	runSequence?;
 }
 
 export const defaultGulpAddTasksOptions = {
 
 	sep: SEP,
+	runSequence: runSequence,
 
 } as IGulpAddTasksOptions;
+
+export interface IGulpHelp extends gulp.Gulp
+{
+	task: IGulpHelpTask;
+}
+
+export interface IGulpHelpTask
+{
+	help;
+
+	[index: string]: any;
+}
 
 export function gulpAddTasks(gulpInstance,
 	parentTaskName: string | string[] = '',
 	options: IGulpAddTasksOptions = defaultGulpAddTasksOptions
-): IExportDefault
+)
 {
 	if (!looksLikeGulp(gulpInstance))
 	{
@@ -243,21 +270,25 @@ export function gulpAddTasks(gulpInstance,
 
 	}, defaultGulpAddTasksOptions, options) as IGulpAddTasksOptions;
 
-	return function (...taskObjects)
+	let fn = function (...taskObjects): IGulpHelp
 	{
-		const runSequence = require('run-sequence');
-		const gulp = looksLikeGulpHelp(gulpInstance) ? gulpInstance : require('gulp-help')(gulpInstance);
+		const gulp = looksLikeGulpHelp(gulpInstance) ? gulpInstance : gulpHelp(gulpInstance);
+
+		gulp.options = gulp.options || {};
+		gulp.options.gulpAddTasks = cache;
 
 		taskObjects
-			.forEach((taskObject: ITaskOptions) =>
+			.forEach((taskObject: ITaskObjectList) =>
 			{
-				addTasksToGulp(gulp, runSequence, taskObject, parentTaskName as string, cache);
+				addTasksToGulp(gulp, cache.runSequence, taskObject, parentTaskName as string, cache);
 			});
 
 		return gulp;
 	};
+
+	return fn;
 }
 
-export { gulpAddTasks as init };
+export { gulpAddTasks as init, runSequence, gulpHelp, SEP };
 
 export default gulpAddTasks;
