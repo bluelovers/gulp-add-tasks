@@ -27,3 +27,5 @@ npm-debug.log
 /src/*.js
 /.idea/
 /node_modules/
+*.d.ts
+!/node.js
