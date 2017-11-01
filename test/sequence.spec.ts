@@ -3,7 +3,7 @@
  */
 
 import { relative, expect } from './_local-dev';
-import { init, getTasks, prefixTasks } from '..';
+import { init, getTasks, prefixTasks } from '../src';
 import * as runSequence from 'run-sequence';
 import { Gulp } from 'gulp';
 
@@ -66,7 +66,7 @@ describe(relative(__filename), () =>
 
 				gulpInstance.run(name, function ()
 				{
-					let expectation2 = array_unique(expectation);
+					let expectation2 = array_unique(expectation as string[]);
 
 					//console.log(this.seq, expectation2);
 					//console.log(cache);
