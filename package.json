@@ -1,45 +1,41 @@
 {
   "name": "gulp-add-tasks2",
-  "version": "2.0.8",
+  "version": "2.0.9",
   "description": "A tool to add tasks to a passed-in gulp instance, as a task list, or as a map of functions",
-  "main": "src/index.js",
-  "files": [],
-  "scripts": {
-    "test": "npx mocha"
-  },
   "keywords": [
+    "add",
     "gulp",
-    "tasks",
     "task list",
-    "add"
+    "tasks"
   ],
-  "author": "Dustin Schau",
-  "license": "MIT",
+  "homepage": "https://github.com/bluelovers/gulp-add-tasks#readme",
+  "bugs": {
+    "url": "https://github.com/bluelovers/gulp-add-tasks/issues"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bluelovers/gulp-add-tasks.git"
   },
-  "devDependencies": {
-    "@types/mocha": "latest",
-    "@types/node": "latest",
-    "chai": "latest",
-    "conventional-changelog-cli": "latest",
-    "del-cli": "latest",
-    "mocha": "latest",
-    "typescript": "latest"
+  "license": "MIT",
+  "author": "Dustin Schau",
+  "files": [],
+  "main": "src/index",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "npx mocha"
   },
   "dependencies": {
-    "run-sequence": "latest",
-    "gulp": "latest",
-    "gulp-help": "latest",
-    "gulp-run-seq-unique": "latest"
+    "gulp-help": "^1.6.1",
+    "gulp-run-seq-unique": "^1.0.4",
+    "run-sequence": "^2.2.1"
   },
-  "bugs": {
-    "url": "https://github.com/bluelovers/gulp-add-tasks/issues"
+  "devDependencies": {
+    "@types/mocha": "^5.2.0",
+    "@types/node": "^10.0.0"
   },
-  "homepage": "https://github.com/bluelovers/gulp-add-tasks#readme",
-  "directories": {
-    "lib": "lib",
-    "test": "test"
+  "peerDependencies": {
+    "gulp": "^3.9.1"
   }
 }

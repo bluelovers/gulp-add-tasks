@@ -24,8 +24,23 @@ Thumbs.db
 # NPM files
 npm-debug.log
 /test/*.spec.js
-/src/*.js
 /.idea/
 /node_modules/
-*.d.ts
-!/node.js
+### git template
+.idea
+
+~ci.list.txt
+~ci.log.txt
+~ci.errors.txt
+
+*.stackdump
+*.bak
+*.old
+
+package-lock.json
+
+test/**/*.js
+test/**/*.d.ts
+test/*.js
+test/*.d.ts
+test/temp
